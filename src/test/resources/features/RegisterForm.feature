@@ -5,7 +5,26 @@ Feature: Form validations
         Given the user navigates to the registration form page
 
     Scenario: Successful submission of the registration form with valid data
-        When they fill in all the required fields and submit the form
+        When they fill in all the required fields
+        And I click the submit button
+        Then a confirmation modal with the entered data should appear
+
+    Scenario Outline: Form submission fails when a required field is empty
+        When I enter the following data:
+            | firstName   | lastName   | phoneNumber   |
+            | <firstName> | <lastName> | <phoneNumber> |
+        And I click the submit button
+        Then I should see a validation message for the empty field
+
+        Examples:
+            | firstName | lastName | phoneNumber |
+            |           | Smith    | 1234567890  |
+            | John      |          | 1234567890  |
+            | John      | Smith    |             |
+
+    Scenario: Successful submission of the registration form with valid data
+        When they fill in all the required fields
+        And I click the submit button
         Then a confirmation modal with the entered data should appear
 
 

@@ -29,11 +29,16 @@ public class RegisterFormPage extends BasePage {
     }
 
     public void fillForm(String firstName, String lastName, String email, String phoneNumber, String address) {
-        write(inputFirstName, firstName);
-        write(inputLastName, lastName);
+        if (firstName != null)
+            write(inputFirstName, firstName);
+        if (lastName != null)
+            write(inputLastName, lastName);
+        if (phoneNumber != null)
+            write(inputMobileNumber, phoneNumber);
+
         write(inputEmail, email);
-        write(inputMobileNumber, phoneNumber);
         write(inputAddress, address);
+
         randomGenderSelect(selectGender);
         randomGenderSelect(selectHobbies);
     }
@@ -49,15 +54,34 @@ public class RegisterFormPage extends BasePage {
         label.click();
     }
 
-    public String submitForm() {
+    public void submitForm() {
         WebElement boton = driver.findElement(submitButton);
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
         js.executeScript("arguments[0].scrollIntoView(true);", boton);
         clickElement(submitButton);
+    }
+
+    public String verifyModalIsDisplayed() {
         WebElement modalTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(confirmationModal));
         closeModal(closeButtonModal);
         return modalTitle.getText();
+    }
+
+    public boolean validateRequiredInputs() {
+        By[] inputs = { inputFirstName, inputLastName, inputMobileNumber };
+
+        for (By locator : inputs) {
+            WebElement input = driver.findElement(locator);
+            String value = input.getDomProperty("value");
+            if (value.isEmpty()) {
+                String message = input.getDomProperty("validationMessage");
+                if (!message.isEmpty()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void closeModal(By locator) {
