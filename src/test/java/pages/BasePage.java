@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
+import java.util.List;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -44,6 +45,10 @@ public class BasePage {
 
     public static void closeBrowser() {
         driver.quit();
+    }
+
+       public List<WebElement> bringMeAllElements(By locator) {
+        return driver.findElements(locator);
     }
 
 }

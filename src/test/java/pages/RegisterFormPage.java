@@ -27,6 +27,7 @@ public class RegisterFormPage extends BasePage {
     private By calendarDay = By
             .xpath("//div[contains(@class, 'react-datepicker__day') and not(contains(@class, 'outside-month'))]");
     private By calendarDateInput = By.id("dateOfBirthInput");
+    private By modal = By.cssSelector("table.table tbody tr");
 
     public RegisterFormPage() {
         super(driver);
@@ -140,6 +141,18 @@ public class RegisterFormPage extends BasePage {
 
     public String getDateOfBirthValue() {
         return driver.findElement(calendarDateInput).getDomProperty("value");
+    }
+
+    public void ValidateModalObligatorios(String firstName, String lastName, String mobileNumber) {
+        write(inputFirstName, firstName);
+        write(inputLastName, lastName);
+        write(inputMobileNumber, mobileNumber);
+
+        randomGenderSelect(selectGender);
+    }
+
+    public List<WebElement> validateFormFields() {
+        return bringMeAllElements(modal);
     }
 
 }

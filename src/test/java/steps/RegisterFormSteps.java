@@ -2,9 +2,12 @@ package steps;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
 import java.util.Map;
 import org.testng.Assert;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import io.cucumber.java.en.*;
 import model.FormModel;
 import pages.RegisterFormPage;
@@ -97,5 +100,33 @@ public class RegisterFormSteps {
     public void validateBirthDate(String expectedResult) {
         String date = registerForm.getDateOfBirthValue();
         assertEquals(expectedResult, date);
+    }
+
+        @When("the user enters only the required registration form data")
+    public void fillFormWithRequiredFields(io.cucumber.datatable.DataTable dataTable) {
+        Map<String, String> data = dataTable.asMaps().get(0);
+
+        String firstName = data.get("firstName");
+        String lastName = data.get("lastName");
+        String phoneNumber = data.get("phoneNumber");
+
+        registerForm.ValidateModalObligatorios(firstName, lastName, phoneNumber);
+    }
+
+    @Then("the user should see a modal with only the four required fields filled")
+    public void validateConfirmationModal() {
+        List<WebElement> rows = registerForm.validateFormFields();
+        for (WebElement row : rows) {
+            String label = row.findElement(By.tagName("td")).getText().trim();
+            String value = row.findElements(By.tagName("td")).get(1).getText().trim();
+
+            if (label.equals("Student Name") || label.equals("Gender") || label.equals("Mobile")) {
+                Assert.assertFalse(value.isEmpty(), "The field " + label + " is empty");
+            } else {
+                Assert.assertTrue(value.isEmpty(), "The field " + label + " should be empty");
+                ;
+            }
+        }
+
     }
 }

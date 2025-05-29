@@ -49,3 +49,14 @@ Feature: Form validations
             | day | month    | year | result      |
             | 15  | December | 1990 | 15 Dec 1990 |
             | 17  | January  | 1999 | 17 Jan 1999 |
+
+    Scenario Outline: Validate that only the required data is displayed in the confirmation modal
+        When the user enters only the required registration form data
+            | firstName   | lastName   | phoneNumber   |
+            | <firstName> | <lastName> | <phoneNumber> |
+        And the user clicks the submission button
+        Then the user should see a modal with only the four required fields filled
+
+        Examples:
+            | firstName | lastName | phoneNumber |
+            | John      | Smith    | 1234567890  |
