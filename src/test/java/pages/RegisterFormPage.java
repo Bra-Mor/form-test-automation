@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 
 public class RegisterFormPage extends BasePage {
     private By inputFirstName = By.id("firstName");
@@ -19,6 +20,12 @@ public class RegisterFormPage extends BasePage {
     private By submitButton = By.id("submit");
     private By confirmationModal = By.id("example-modal-sizes-title-lg");
     private By closeButtonModal = By.id("closeLargeModal");
+    private By dateOfBirthInput = By.id("dateOfBirthInput");
+    private By calendarYear = By.className("react-datepicker__year-select");
+    private By calendarMonth = By.className("react-datepicker__month-select");
+    private By calendarDay = By
+            .xpath("//div[contains(@class, 'react-datepicker__day') and not(contains(@class, 'outside-month'))]");
+    private By calendarDateInput = By.id("dateOfBirthInput");
 
     public RegisterFormPage() {
         super(driver);
@@ -68,6 +75,10 @@ public class RegisterFormPage extends BasePage {
         return modalTitle.getText();
     }
 
+    public void closeModal(By locator) {
+        clickElement(locator);
+    }
+
     public boolean validateRequiredInputs() {
         By[] inputs = { inputFirstName, inputLastName, inputMobileNumber };
 
@@ -84,10 +95,6 @@ public class RegisterFormPage extends BasePage {
         return true;
     }
 
-    public void closeModal(By locator) {
-        clickElement(locator);
-    }
-
     public String validateEmail() {
         WebElement emailInput = driver.findElement(inputEmail);
         String email = emailInput.getDomProperty("value");
@@ -100,6 +107,35 @@ public class RegisterFormPage extends BasePage {
         return mobileNumber;
     }
 
-}
+    public void selectDate(String day, String month, String year) {
+        WebElement dateInput = driver.findElement(dateOfBirthInput);
 
-// validar ingles
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView(true);", dateInput);
+        clickElement(dateOfBirthInput);
+
+        WebElement yearDropdown = driver.findElement(calendarYear);
+        Select selectYear = new Select(yearDropdown);
+        selectYear.selectByVisibleText(year);
+
+        WebElement monthDropdown = driver.findElement(calendarMonth);
+        Select selectMonth = new Select(monthDropdown);
+        selectMonth.selectByVisibleText(month);
+
+        List<WebElement> days = driver
+                .findElements(calendarDay);
+        for (WebElement d : days) {
+            if (d.getText().equals(day)) {
+                d.click();
+                break;
+            }
+        }
+
+    }
+
+    public String getDateOfBirthValue() {
+        return driver.findElement(calendarDateInput).getDomProperty("value");
+
+    }
+
+}

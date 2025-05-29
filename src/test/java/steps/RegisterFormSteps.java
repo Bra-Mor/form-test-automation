@@ -95,4 +95,16 @@ public class RegisterFormSteps {
         assertEquals(expectedResult, validationResult);
     }
 
+    @When("The user clicks on the calendar input field and selects a valid date")
+    public void userSelectsValidDate() {
+        registerForm.selectDate("15", "December", "1990");
+        registerForm.getDateOfBirthValue();
+    }
+
+    @Then("the date should match the selected one {string}")
+    public void validateDateResult(String expectedResult) {
+        String date = registerForm.getDateOfBirthValue();
+        assertEquals(expectedResult, date);
+
+    }
 }
