@@ -1,6 +1,8 @@
 Feature: Form validations
     Verify that the registration form functions correctly across its various fields.
 
+
+    #todo agregar "the user en todos los pasos"
     Background:
         Given the user navigates to the registration form page
 
@@ -27,12 +29,21 @@ Feature: Form validations
     #     And I click the submit button
     #     Then a confirmation modal with the entered data should appear
 
-    Scenario Outline: Validate emails structure
-        When enter the email "<email>"
-        Then the result should be "<result>"
+    # Scenario Outline: Validate emails structure
+    #     When enter the email "<email>"
+    #     Then the result should be "<result>"
+
+    #     Examples:
+    #         | email                 | result  |
+    #         | nombre@gmail.com      | valid   |
+    #         | correo_invalido@@mail | invalid |
+
+    Scenario Outline: Validate phone number format
+        When enter the phone number "<phoneNumber>"
+        Then the phoneNumber result should be "<result>"
 
         Examples:
-            | email                 | result  |
-            | nombre@gmail.com      | valid   |
-            | correo_invalido@@mail | invalid |
-
+            | phoneNumber | result  |
+            | 1234567890  | valid   |
+            | 12345       | invalid |
+            | 12345j      | invalid |

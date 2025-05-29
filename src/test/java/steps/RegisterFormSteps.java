@@ -77,4 +77,22 @@ public class RegisterFormSteps {
         assertEquals(expectedResult, validationResult);
     }
 
+    @When("enter the phone number {string}")
+    public void enterPhoneNumber(String phoneNumber) {
+        String firstName = faker.name().firstName();
+        String lastName = faker.name().lastName();
+        String email = faker.internet().emailAddress();
+        String address = faker.address().fullAddress();
+        registerForm.fillForm(firstName, lastName, email, phoneNumber, address);
+    }
+
+    @Then("the phoneNumber result should be {string}")
+    public void validatePhoneResult(String expectedResult) {
+        String phoneNumberRegex = "^\\d{10}$";
+        String phoneNumber = registerForm.validatePhoneNumber();
+        System.out.println(phoneNumber);
+        String validationResult = phoneNumber.matches(phoneNumberRegex) ? "valid" : "invalid";
+        assertEquals(expectedResult, validationResult);
+    }
+
 }

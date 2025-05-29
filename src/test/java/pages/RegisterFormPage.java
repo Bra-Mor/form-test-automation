@@ -94,4 +94,12 @@ public class RegisterFormPage extends BasePage {
         return email;
     }
 
+    public String validatePhoneNumber() {
+        WebElement mobileNumberInput = driver.findElement(inputMobileNumber);
+        String mobileNumber = mobileNumberInput.getDomProperty("value");
+        return mobileNumber;
+    }
+
 }
+
+// validar ingles
