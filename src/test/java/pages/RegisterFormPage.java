@@ -8,6 +8,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import model.FormModel;
 
 public class RegisterFormPage extends BasePage {
     private By inputFirstName = By.id("firstName");
@@ -35,21 +36,25 @@ public class RegisterFormPage extends BasePage {
         navigateTo("https://demoqa.com/automation-practice-form");
     }
 
-    public void fillForm(String firstName, String lastName, String email, String phoneNumber, String address) {
-        if (firstName != null)
-            write(inputFirstName, firstName);
-        if (lastName != null)
-            write(inputLastName, lastName);
-        if (phoneNumber != null)
-            write(inputMobileNumber, phoneNumber);
+    public void fillForm(FormModel formModel) {
+        if (formModel.getFirstName() != null)
+            write(inputFirstName, formModel.getFirstName());
+        if (formModel.getLastName() != null)
+            write(inputLastName, formModel.getLastName());
+        if (formModel.getMobile() != null)
+            write(inputMobileNumber, formModel.getMobile());
 
-        write(inputEmail, email);
-        write(inputAddress, address);
-
+        write(inputEmail, formModel.getEmail());
+        write(inputAddress, formModel.getAddress());
         randomGenderSelect(selectGender);
         randomGenderSelect(selectHobbies);
     }
 
+    /**
+     * Selects randomly one of the gender radio buttons.
+     * 
+     * @param locator
+     */
     public void randomGenderSelect(By locator) {
         List<WebElement> radios = driver.findElements(locator);
 
@@ -62,21 +67,17 @@ public class RegisterFormPage extends BasePage {
     }
 
     public void submitForm() {
-        WebElement boton = driver.findElement(submitButton);
+        WebElement button = driver.findElement(submitButton);
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
-        js.executeScript("arguments[0].scrollIntoView(true);", boton);
+        js.executeScript("arguments[0].scrollIntoView(true);", button);
         clickElement(submitButton);
     }
 
-    public String verifyModalIsDisplayed() {
+    public String IsModalDisplayed() {
         WebElement modalTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(confirmationModal));
         closeModal(closeButtonModal);
         return modalTitle.getText();
-    }
-
-    public void closeModal(By locator) {
-        clickElement(locator);
     }
 
     public boolean validateRequiredInputs() {
@@ -93,6 +94,10 @@ public class RegisterFormPage extends BasePage {
             }
         }
         return true;
+    }
+
+    public void closeModal(By locator) {
+        clickElement(locator);
     }
 
     public String validateEmail() {
@@ -135,7 +140,6 @@ public class RegisterFormPage extends BasePage {
 
     public String getDateOfBirthValue() {
         return driver.findElement(calendarDateInput).getDomProperty("value");
-
     }
 
 }
