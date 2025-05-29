@@ -42,4 +42,8 @@ public class BasePage {
         Find(locator).click();
     }
 
+    public static void closeBrowser() {
+        driver.quit();
+    }
+
 }
