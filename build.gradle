@@ -1,0 +1,27 @@
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.seleniumhq.selenium:selenium-java:4.31.0"
+    implementation "io.github.bonigarcia:webdrivermanager:6.1.0"
+    implementation 'net.datafaker:datafaker:2.4.3'
+    testImplementation "org.testng:testng:7.11.0"
+    testImplementation "io.cucumber:cucumber-java:7.22.1"
+    testImplementation "io.cucumber:cucumber-junit:7.22.1"
+    testImplementation 'tech.grasshopper:extentreports-cucumber7-adapter:1.14.0'
+}
+
+tasks.named('test') { 
+systemProperty "cucumber.options", System.getProperty("cucumber.options")
+systemProperties System.getProperties();
+
+  testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
+}
