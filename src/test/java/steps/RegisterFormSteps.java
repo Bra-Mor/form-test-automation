@@ -1,5 +1,7 @@
 package steps;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Map;
 
 import org.testng.Assert;
@@ -56,6 +58,23 @@ public class RegisterFormSteps {
     public void validateRequiredInputs() {
         boolean validateInput = registerForm.validateRequiredInputs();
         Assert.assertFalse(validateInput, "Expected this field should be empty");
+    }
+
+    @When("enter the email {string}")
+    public void enterEmail(String email) {
+        String firstName = faker.name().firstName();
+        String lastName = faker.name().lastName();
+        String phoneNumber = faker.numerify("##########");
+        String address = faker.address().fullAddress();
+        registerForm.fillForm(firstName, lastName, email, phoneNumber, address);
+    }
+
+    @Then("the result should be {string}")
+    public void validateEmail(String expectedResult) {
+        String emailRegex = "^[a-zA-Z0-9_\\-\\.]+@[a-zA-Z0-9_\\-\\.]+\\.[a-zA-Z]{2,5}$";
+        String email = registerForm.validateEmail();
+        String validationResult = email.matches(emailRegex) ? "valid" : "invalid";
+        assertEquals(expectedResult, validationResult);
     }
 
 }

@@ -88,4 +88,10 @@ public class RegisterFormPage extends BasePage {
         clickElement(locator);
     }
 
+    public String validateEmail() {
+        WebElement emailInput = driver.findElement(inputEmail);
+        String email = emailInput.getDomProperty("value");
+        return email;
+    }
+
 }
