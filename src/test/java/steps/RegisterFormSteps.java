@@ -85,7 +85,6 @@ public class RegisterFormSteps {
     public void validatePhoneNumber(String expectedResult) {
         String phoneNumberRegex = "^\\d{10}$";
         String phoneNumber = registerForm.validatePhoneNumber();
-        System.out.println(phoneNumber);
         String validationResult = phoneNumber.matches(phoneNumberRegex) ? "valid" : "invalid";
         assertEquals(expectedResult, validationResult);
     }
@@ -102,7 +101,7 @@ public class RegisterFormSteps {
         assertEquals(expectedResult, date);
     }
 
-        @When("the user enters only the required registration form data")
+    @When("the user enters only the required registration form data")
     public void fillFormWithRequiredFields(io.cucumber.datatable.DataTable dataTable) {
         Map<String, String> data = dataTable.asMaps().get(0);
 
